@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Inventory from './components/Inventory';
 import Character from './components/Character';
-import Log from './components/Log'
+import Event from './components/Event';
+import Actions from './components/Actions';
 
 class App extends Component {
   state = {
@@ -11,6 +12,14 @@ class App extends Component {
       armour: "none"
     },
     stats: {
+      strength: 1,
+      magic: 1,
+      defense: 1
+    },
+    currentMob: {
+      name: "Chicken",
+      hp: 5,
+      maxHp: 5,
       strength: 1,
       magic: 1,
       defense: 1
@@ -23,19 +32,11 @@ class App extends Component {
         </header>
         <Inventory equipped={this.state.equipped} />
         <Character stats={this.state.stats} onClick={this.increaseStat} />
-        <Log />
+        <Event currentMob={this.state.currentMob} />
+        <Actions onClick={this.attackMob} />
       </div>
     );
   }
-
-  increaseStat = (stat) => {
-    const newState = { ...this.state }
-    newState.stats[stat] += 1;
-    this.setState({
-      newState
-    })
-  }
-
   saveData = () => {
     localStorage.setItem('data', JSON.stringify(this.state))
   }
@@ -44,13 +45,35 @@ class App extends Component {
     this.saveData();
   }
 
-  componentDidMount = () => {
-    const data = localStorage.getItem('data');
-    if (data) {
-      const state = JSON.parse(data);
-      this.setState(state);
+  // componentDidMount = () => {
+  //   const data = localStorage.getItem('data');
+  //   if (data) {
+  //     const state = JSON.parse(data);
+  //     this.setState(state);
+  //   }
+  // }
+
+  increaseStat = (stat) => {
+    const newState = { ...this.state }
+    newState.stats[stat] += 1;
+    this.setState({
+      newState
+    })
+  }
+  attackMob = () => {
+    const mobHP = this.state.currentMob.hp;
+    if (mobHP > 0) {
+      const newState = { ...this.state }
+      newState.currentMob.hp -= 1;
+      this.setState({
+        newState
+      })
+    }
+    if (mobHP === 0) {
+      console.log("You win!")
     }
   }
+
 }
 
 export default App;
