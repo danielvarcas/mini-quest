@@ -1,17 +1,19 @@
 import React from 'react';
 
-const Inventory = () => {
+const Inventory = ({ equipped }) => {
   return (
-    <div id="inventory">
+    <div>
       <table>
-        <tr>
-          <th>Weapon:</th>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>Armour:</th>
-          <td>None</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Weapon:</th>
+            <td>{equipped.weapon}</td>
+          </tr>
+          <tr>
+            <th>Armour:</th>
+            <td>{equipped.armour}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   );
