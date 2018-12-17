@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Inventory from './components/Inventory';
 import Character from './components/Character';
+import Log from './components/Log'
 
 class App extends Component {
   state = {
@@ -22,6 +23,7 @@ class App extends Component {
         </header>
         <Inventory equipped={this.state.equipped} />
         <Character stats={this.state.stats} onClick={this.increaseStat} />
+        <Log />
       </div>
     );
   }
@@ -32,6 +34,22 @@ class App extends Component {
     this.setState({
       newState
     })
+  }
+
+  saveData = () => {
+    localStorage.setItem('data', JSON.stringify(this.state))
+  }
+
+  componentDidUpdate = () => {
+    this.saveData();
+  }
+
+  componentDidMount = () => {
+    const data = localStorage.getItem('data');
+    if (data) {
+      const state = JSON.parse(data);
+      this.setState(state);
+    }
   }
 }
 
